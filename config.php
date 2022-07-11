@@ -17,8 +17,8 @@ $databaseHost = 'crudapp.cdf0gxv5lsu5.ap-south-1.rds.amazonaws.com';
 $databaseName = 'crudapp';
 $databaseUsername = 'admincrud';
 $databasePassword = 'test123!';
-$custombucket = 'add-cruds',
-$customorigin = 'ap-south-1',
+$custombucket = 'add-cruds';
+$customorigin = 'ap-south-1';
 
 $mysqli = mysqli_connect($databaseHost, $databaseUsername, $databasePassword, $databaseName); 
  
