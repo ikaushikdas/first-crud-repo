@@ -7,7 +7,7 @@
 	<a href="index.php">Home</a>
 	<br/><br/>
 
-	<form action="add.php" method="post" name="form1">
+	<form action="add.php" method="post" name="form1" enctype="multipart/form-data">
 		<table width="25%" border="0">
 			<tr> 
 				<td>Name</td>
@@ -20,6 +20,14 @@
 			<tr> 
 				<td>Email</td>
 				<td><input type="text" name="email"></td>
+			</tr>
+			<tr>
+			 <td>PHP Upload File</td>
+        <td><label for="file_name">Filename:</label> </td>
+         <td><input type="file" name="anyfile" id="anyfile"></td>
+         <td><input type="submit" name="submit" value="Upload"></td>
+         <td><p><strong>Note:</strong> Only .jpg, .jpeg, .gif, .png formats allowed to a max size of 5 MB.</p></td>
+<td><img src="<?php echo $image;?>"></td>
 			</tr>
 			<tr> 
 				<td></td>
