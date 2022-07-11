@@ -13,9 +13,11 @@ if(isset($_POST['Submit'])) {
 	echo $age = mysqli_real_escape_string($mysqli, $_POST['age']);
 	echo $email = mysqli_real_escape_string($mysqli, $_POST['email']);
 	
-		
+		echo "tyui";
 	// checking empty fields
 	if(empty($name) || empty($age) || empty($email)) {
+
+		echo "tyuli";
 				
 		if(empty($name)) {
 			echo "<font color='red'>Name field is empty.</font><br/>";
