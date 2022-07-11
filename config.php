@@ -13,10 +13,10 @@ $conn = mysql_connect("localhost","root","root")
  * using mysqli_connect instead
  */
 
-$databaseHost = 'localhost';
+$databaseHost = 'crudapp.cdf0gxv5lsu5.ap-south-1.rds.amazonaws.com';
 $databaseName = 'crudapp';
 $databaseUsername = 'admincrud';
-$databasePassword = 'test123';
+$databasePassword = 'test123!';
 
 $mysqli = mysqli_connect($databaseHost, $databaseUsername, $databasePassword, $databaseName); 
  
