@@ -136,7 +136,6 @@ while($res = mysqli_fetch_array($result))
 			 <td>PHP Upload File</td>
         <td><label for="file_name">Filename:</label> </td>
          <td><input type="file" name="anyfile" id="anyfile"></td>
-         <td><input type="submit" name="submit" value="Upload"></td>
          <td><p><strong>Note:</strong> Only .jpg, .jpeg, .gif, .png formats allowed to a max size of 5 MB.</p></td>
 <td><img src="<?php echo $image;?>"></td>
 			</tr>
