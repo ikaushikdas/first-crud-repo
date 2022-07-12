@@ -14,7 +14,7 @@ $conn = mysql_connect("localhost","root","root")
  */
 
 $databaseHost = 'crudapp.cdf0gxv5lsu5.ap-south-1.rds.amazonaws.com';
-$databaseName = 'crudapp';
+$databaseName = 'test';
 $databaseUsername = 'admincrud';
 $databasePassword = 'test123!';
 // $databaseHost = 'localhost';
