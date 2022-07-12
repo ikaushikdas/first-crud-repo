@@ -7,28 +7,24 @@
 <?php
 //including the database connection file
 include_once("config.php");
-require 'vendor/autoload.php';
+require 'vendor/autoload.php';	
 use Aws\S3\S3Client;
-// Instantiate an Amazon S3 client.
-$s3Client = new S3Client([
-'version' => 'latest',
-'region'  => $customorigin,
-'credentials' => [
-'key'    => 'AKIARWF5OIDPTPHJVZGU',
-'secret' => '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'
-]
-]);
+use Aws\S3\Exception\S3Exception;
+	// AWS Info
+$bucketName = $custombucket;
+$IAM_KEY = 'AKIARWF5OIDP6KCGF2TG';
+$IAM_SECRET = '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';
 
 if(isset($_POST['Submit'])) {	
 	echo $name = $_POST['name'];
 	echo $age = $_POST['age'];
 	echo $email = $_POST['email'];
 	
-		echo "tyui";
+		
 	// checking empty fields
 	if(empty($name) || empty($age) || empty($email)) {
 
-		echo "tyuli";
+		
 				
 		if(empty($name)) {
 			echo "<font color='red'>Name field is empty.</font><br/>";
@@ -42,58 +38,69 @@ if(isset($_POST['Submit'])) {
 			echo "<font color='red'>Email field is empty.</font><br/>";
 		}
 
-		if(isset($_FILES["anyfile"]) && $_FILES["anyfile"]["error"] == 0){
-$allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
-$filename = $_FILES["anyfile"]["name"];
-$filetype = $_FILES["anyfile"]["type"];
-$filesize = $_FILES["anyfile"]["size"];
-// Validate file extension
-$ext = pathinfo($filename, PATHINFO_EXTENSION);
-if(!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
-// Validate file size - 10MB maximum
-$maxsize = 10 * 1024 * 1024;
-if($filesize > $maxsize) die("Error: File size is larger than the allowed limit.");
-// Validate type of the file
-if(in_array($filetype, $allowed)){
-// Check whether file exists before uploading it
-if(file_exists("upload/" . $filename)){
-echo $filename . " is already exists.";
-} else{
-if(move_uploaded_file($_FILES["anyfile"]["tmp_name"], "upload/" . $filename)){
-$bucket = $custombucket;
-$file_Path = __DIR__ . '/upload/'. $filename;
-$key = basename($file_Path);
-try {
-$result = $s3Client->putObject([
-'Bucket' => $bucket,
-'Key'    => $key,
-'Body'   => fopen($file_Path, 'r'),
-'ACL'    => 'public-read', // make file 'public'
-]);
-echo "Image uploaded successfully. Image path is: ". $result->get('ObjectURL');
-} catch (Aws\S3\Exception\S3Exception $e) {
-echo "There was an error uploading the file.\n";
-echo $e->getMessage();
-}
-echo "Your file was uploaded successfully.";
-}else{
-echo "File is not uploaded";
-}
-} 
-} else{
-echo "Error: There was a problem uploading your file. Please try again."; 
-}
-} else{
-echo "Error: " . $_FILES["anyfile"]["error"];
-}
-		
-		//link to the previous page
+        if(isset($_FILES["anyfile"]) && $_FILES["anyfile"]["error"] == 0){
+        	echo "<font color='red'>Upload an valid image.</font><br/>";
+        }
+        //link to the previous page
 		echo "<br/><a href='javascript:self.history.back();'>Go Back</a>";
 	} else { 
+		echo "hello s3 aws";
+			try {
+		// You may need to change the region. It will say in the URL when the bucket is open
+		// and on creation.
+		$s3 = S3Client::factory(
+			array(
+				'credentials' => array(
+					'key' => $IAM_KEY,
+					'secret' => $IAM_SECRET
+				),
+				'version' => 'latest',
+				'region'  => $customorigin
+			)
+		);
+	} catch (Exception $e) {
+		// We use a die, so if this fails. It stops here. Typically this is a REST call so this would
+		// return a json object.
+		die("Error: " . $e->getMessage());
+	}
+
+	
+	// For this, I would generate a unqiue random string for the key name. But you can do whatever.
+	$keyName = 'uploads/' . basename($_FILES["anyfile"]['name']);
+	echo $keyname;
+	$pathInS3 = 'https://s3.us-east-2.amazonaws.com/' . $bucketName . '/' . $keyName;
+
+	echo $pathInS3;
+
+	// Add it to S3
+	try {
+		// Uploaded:
+		$file = $_FILES["anyfile"]['tmp_name'];
+
+		$s3->putObject(
+			array(
+				'Bucket'=>$bucketName,
+				'Key' =>  $keyName,
+				'SourceFile' => $file,
+				'StorageClass' => 'REDUCED_REDUNDANCY'
+			)
+		);
+
+	} catch (S3Exception $e) {
+		die('Error:' . $e->getMessage());
+	} catch (Exception $e) {
+		die('Error:' . $e->getMessage());
+	}
+
+
+	echo 'Done';
+
+	// Now that you have it working, I recommend adding some checks on the files.
+	// Example: Max size, allowed file types, etc.
 		// if all the fields are filled (not empty) 
 			
 		//insert data to database	
-		$result = mysqli_query($mysqli, "INSERT INTO users(name,age,email,image) VALUES('$name','$age','$email','$result')");
+		$result = mysqli_query($mysqli, "INSERT INTO users(name,age,email,image) VALUES('$name','$age','$email','$pathInS3')");
 		
 		//display success message
 		echo "<font color='green'>Data added successfully.";
