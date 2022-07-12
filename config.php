@@ -17,6 +17,10 @@ $databaseHost = 'crudapp.cdf0gxv5lsu5.ap-south-1.rds.amazonaws.com';
 $databaseName = 'crudapp';
 $databaseUsername = 'admincrud';
 $databasePassword = 'test123!';
+// $databaseHost = 'localhost';
+// $databaseName = 'test';
+// $databaseUsername = 'root';
+// $databasePassword = '';
 $custombucket = 'add-cruds';
 $customorigin = 'ap-south-1';
 

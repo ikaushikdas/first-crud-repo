@@ -7,11 +7,22 @@
 <?php
 //including the database connection file
 include_once("config.php");
+require 'vendor/autoload.php';
+use Aws\S3\S3Client;
+// Instantiate an Amazon S3 client.
+$s3Client = new S3Client([
+'version' => 'latest',
+'region'  => $customorigin,
+'credentials' => [
+'key'    => 'AKIARWF5OIDPTPHJVZGU',
+'secret' => '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'
+]
+]);
 
 if(isset($_POST['Submit'])) {	
-	echo $name = mysqli_real_escape_string($mysqli, $_POST['name']);
-	echo $age = mysqli_real_escape_string($mysqli, $_POST['age']);
-	echo $email = mysqli_real_escape_string($mysqli, $_POST['email']);
+	echo $name = $_POST['name'];
+	echo $age = $_POST['age'];
+	echo $email = $_POST['email'];
 	
 		echo "tyui";
 	// checking empty fields
